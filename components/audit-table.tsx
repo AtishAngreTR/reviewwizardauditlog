@@ -27,10 +27,61 @@ function DetailLine({
   )
 }
 
+function FieldChangeTable({
+  changes,
+}: {
+  changes: NonNullable<AuditAction["fieldChanges"]>
+}) {
+  const cellHead =
+    "border-b border-border px-3 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground"
+  const cell = "border-b border-border px-3 py-2 align-top"
+  return (
+    <div className="overflow-x-auto rounded-md border border-border bg-card">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr>
+            <th scope="col" className={cellHead}>
+              Field name
+            </th>
+            <th scope="col" className={cellHead}>
+              Original value
+            </th>
+            <th scope="col" className={cellHead}>
+              Value changed
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {changes.map((c) => (
+            <tr key={c.fieldName} className="last:[&>td]:border-b-0">
+              <td className={`${cell} font-medium text-foreground`}>
+                {c.fieldName}
+              </td>
+              <td className={`${cell} font-mono text-xs text-muted-foreground`}>
+                {c.originalValue}
+              </td>
+              <td className={`${cell} font-mono text-xs text-foreground`}>
+                {c.valueChanged}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function DetailPanel({ action }: { action: AuditAction }) {
+  const hasChanges = !!action.fieldChanges?.length
   return (
     <div className="bg-detail-surface px-4 py-4 sm:px-6">
-      <dl className="grid grid-cols-1 gap-y-2.5">
+      {hasChanges ? (
+        <FieldChangeTable changes={action.fieldChanges!} />
+      ) : null}
+
+      <dl
+        className={`grid grid-cols-1 gap-y-2.5 ${hasChanges ? "mt-3.5" : ""}`}
+      >
         {action.details.map((row) => (
           <div
             key={row.label}

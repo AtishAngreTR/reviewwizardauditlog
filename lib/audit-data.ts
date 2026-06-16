@@ -30,6 +30,13 @@ export interface DetailRow {
   mono?: boolean
 }
 
+/** One edited field shown in the Pre-verification / Verification change table. */
+export interface FieldChange {
+  fieldName: string
+  originalValue: string
+  valueChanged: string
+}
+
 export interface AuditAction {
   id: string
   /** Sortable ISO-ish key for ordering (newest first). */
@@ -49,6 +56,11 @@ export interface AuditAction {
   by: string
   /** Label/value pairs shown in the expanded detail grid. */
   details: DetailRow[]
+  /**
+   * Edited fields shown as a table in the expanded detail (Pre-verification &
+   * Verification only). When present, this replaces the label/value grid.
+   */
+  fieldChanges?: FieldChange[]
   /** Optional explanatory note shown under the detail grid. */
   note?: string
 }
@@ -144,10 +156,11 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     detailValue: "•••• 7782",
     sourcePage: "pp. 1–20",
     by: "M. Chen",
-    details: [
-      { label: "Last change", value: "Account number set to •••• 7782", mono: true },
-      { label: "This session", value: "3 fields verified this session" },
-      { label: "By", value: "M. Chen · Jun 12 · 09:25 AM" },
+    details: [{ label: "By", value: "M. Chen · Jun 12 · 09:25 AM" }],
+    fieldChanges: [
+      { fieldName: "Account number", originalValue: "•••• 1782", valueChanged: "•••• 7782" },
+      { fieldName: "Payer's name", originalValue: "Morgan Stnly", valueChanged: "Morgan Stanley" },
+      { fieldName: "Statement date", originalValue: "12/31/25", valueChanged: "12/31/2025" },
     ],
     note: "Pre-verification (Step 1) confirms identifier fields — payer name, account number, statement date, recipient name — not dollar amounts. These drive correct aggregation and bookmarking of multi-page documents. Only each field's final value is logged.",
   },
@@ -164,10 +177,9 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     detailValue: "Morgan Stanley",
     sourcePage: "pp. 1–20",
     by: "M. Chen",
-    details: [
-      { label: "Last change", value: "Payer's name set to Morgan Stanley" },
-      { label: "This session", value: "3 fields verified this session" },
-      { label: "By", value: "M. Chen · Jun 12 · 09:20 AM" },
+    details: [{ label: "By", value: "M. Chen · Jun 12 · 09:20 AM" }],
+    fieldChanges: [
+      { fieldName: "Payer's name", originalValue: "Morgan Stnly", valueChanged: "Morgan Stanley" },
     ],
   },
   {
@@ -183,10 +195,10 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     detailValue: "Mark A. Ross Family Trust",
     sourcePage: "p. 1",
     by: "A. Rivera",
-    details: [
-      { label: "Last change", value: "Recipient name set to Mark A. Ross Family Trust" },
-      { label: "This session", value: "2 fields verified this session" },
-      { label: "By", value: "A. Rivera · Jun 11 · 3:55 PM" },
+    details: [{ label: "By", value: "A. Rivera · Jun 11 · 3:55 PM" }],
+    fieldChanges: [
+      { fieldName: "Recipient name", originalValue: "Mark Ross", valueChanged: "Mark A. Ross Family Trust" },
+      { fieldName: "Recipient TIN", originalValue: "blank", valueChanged: "••••• 4321" },
     ],
   },
   {
@@ -202,10 +214,10 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     detailValue: "12/31/2025",
     sourcePage: "p. 1",
     by: "A. Rivera",
-    details: [
-      { label: "Last change", value: "Statement date set to 12/31/2025", mono: true },
-      { label: "This session", value: "2 fields verified this session" },
-      { label: "By", value: "A. Rivera · Jun 11 · 3:50 PM" },
+    details: [{ label: "By", value: "A. Rivera · Jun 11 · 3:50 PM" }],
+    fieldChanges: [
+      { fieldName: "Statement date", originalValue: "01/31/2025", valueChanged: "12/31/2025" },
+      { fieldName: "Account number", originalValue: "•••• 0098", valueChanged: "•••• 0090" },
     ],
   },
 
@@ -223,10 +235,12 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     detailValue: "56.00",
     sourcePage: "p. 1",
     by: "M. Chen",
-    details: [
-      { label: "Last change", value: "Box 7 Foreign tax paid set to 56.00", mono: true },
-      { label: "This session", value: "12 fields updated this session" },
-      { label: "By", value: "M. Chen · Jun 12 · 10:42 AM" },
+    details: [{ label: "By", value: "M. Chen · Jun 12 · 10:42 AM" }],
+    fieldChanges: [
+      { fieldName: "Box 7 Foreign tax paid", originalValue: "0.00", valueChanged: "56.00" },
+      { fieldName: "Box 1a Total ordinary dividends", originalValue: "2,310.00", valueChanged: "2,318.00" },
+      { fieldName: "Box 1b Qualified dividends", originalValue: "1,180.00", valueChanged: "1,205.00" },
+      { fieldName: "Box 2a Total capital gain distr.", originalValue: "0.00", valueChanged: "540.00" },
     ],
     note: "Only each field's final value is logged — re-edits to the same field collapse to the last value, and fields left unchanged aren't recorded.",
   },
@@ -244,10 +258,11 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     sourcePage: "p. 1",
     by: "M. Chen",
     details: [
-      { label: "Field added", value: "Box 5 Section 199A dividends" },
-      { label: "Value", value: "318.00", mono: true },
       { label: "Reason", value: "OCR did not detect this field" },
       { label: "By", value: "M. Chen · Jun 12 · 10:36 AM" },
+    ],
+    fieldChanges: [
+      { fieldName: "Box 5 Section 199A dividends", originalValue: "— (not captured)", valueChanged: "318.00" },
     ],
   },
   {
@@ -283,9 +298,11 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     by: "M. Chen",
     details: [
       { label: "Template", value: "Raymond James brokerage statement" },
-      { label: "Captured", value: "Box 1a Ordinary dividends = 440.00", mono: true },
-      { label: "This session", value: "Template captured fields OCR could not identify" },
       { label: "By", value: "M. Chen · Jun 12 · 09:50 AM" },
+    ],
+    fieldChanges: [
+      { fieldName: "Box 1a Ordinary dividends", originalValue: "— (not captured)", valueChanged: "440.00" },
+      { fieldName: "Box 1b Qualified dividends", originalValue: "— (not captured)", valueChanged: "410.00" },
     ],
   },
   {
@@ -320,10 +337,9 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     detailValue: "1,180.00",
     sourcePage: "p. 1",
     by: "A. Rivera",
-    details: [
-      { label: "Last change", value: "Box 1b Qualified dividends set to 1,180.00", mono: true },
-      { label: "This session", value: "8 fields updated this session" },
-      { label: "By", value: "A. Rivera · Jun 11 · 4:21 PM" },
+    details: [{ label: "By", value: "A. Rivera · Jun 11 · 4:21 PM" }],
+    fieldChanges: [
+      { fieldName: "Box 1b Qualified dividends", originalValue: "1,080.00", valueChanged: "1,180.00" },
     ],
   },
   {
@@ -433,10 +449,9 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     detailValue: "540.00",
     sourcePage: "p. 1",
     by: "A. Rivera",
-    details: [
-      { label: "Last change", value: "Box 2a Total capital gain distr. set to 540.00", mono: true },
-      { label: "This session", value: "8 fields updated this session" },
-      { label: "By", value: "A. Rivera · Jun 11 · 3:05 PM" },
+    details: [{ label: "By", value: "A. Rivera · Jun 11 · 3:05 PM" }],
+    fieldChanges: [
+      { fieldName: "Box 2a Total capital gain distr.", originalValue: "500.00", valueChanged: "540.00" },
     ],
   },
 
