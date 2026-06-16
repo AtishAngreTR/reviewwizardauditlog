@@ -30,11 +30,9 @@ function DetailLine({
 function FieldChangeTable({
   changes,
   by,
-  sourcePage,
 }: {
   changes: NonNullable<AuditAction["fieldChanges"]>
   by: string
-  sourcePage: string
 }) {
   const cellHead =
     "border-b border-border px-3 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground"
@@ -74,7 +72,7 @@ function FieldChangeTable({
                 {c.valueChanged}
               </td>
               <td className={`${cell} whitespace-nowrap font-mono text-xs text-foreground`}>
-                {sourcePage}
+                {c.page}
               </td>
               <td className={`${cell} whitespace-nowrap text-xs text-foreground`}>
                 {by}
@@ -98,11 +96,7 @@ function DetailPanel({ action }: { action: AuditAction }) {
   return (
     <div className="bg-detail-surface px-4 py-4 sm:px-6">
       {hasChanges ? (
-        <FieldChangeTable
-          changes={action.fieldChanges!}
-          by={byValue}
-          sourcePage={action.sourcePage}
-        />
+        <FieldChangeTable changes={action.fieldChanges!} by={byValue} />
       ) : null}
 
       {gridRows.length > 0 ? (
