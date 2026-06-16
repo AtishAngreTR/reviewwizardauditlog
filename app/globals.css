@@ -5,9 +5,20 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: var(--font-geist-sans), 'Geist Fallback';
-  --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
+  --font-heading: var(--font-source-serif), Georgia, serif;
+  --font-sans: var(--font-source-sans), system-ui, sans-serif;
+  --font-mono: var(--font-source-code), 'Geist Mono Fallback', monospace;
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-stage-prever: var(--stage-prever);
+  --color-stage-verify: var(--stage-verify);
+  --color-stage-superseded: var(--stage-superseded);
+  --color-stage-cfa: var(--stage-cfa);
+  --color-stage-duplicate: var(--stage-duplicate);
+  --color-stage-nfr: var(--stage-nfr);
+  --color-link: var(--link);
+  --color-detail-surface: var(--detail-surface);
+  --color-results-bar: var(--results-bar);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,21 +50,6 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --color-verification: var(--verification);
-  --color-verification-foreground: var(--verification-foreground);
-  --color-verification-subtle: var(--verification-subtle);
-  --color-association: var(--association);
-  --color-association-foreground: var(--association-foreground);
-  --color-association-subtle: var(--association-subtle);
-  --color-superseded: var(--superseded);
-  --color-superseded-foreground: var(--superseded-foreground);
-  --color-superseded-subtle: var(--superseded-subtle);
-  --color-duplicate: var(--duplicate);
-  --color-duplicate-foreground: var(--duplicate-foreground);
-  --color-duplicate-subtle: var(--duplicate-subtle);
-  --color-confirmed: var(--confirmed);
-  --color-confirmed-foreground: var(--confirmed-foreground);
-  --color-confirmed-subtle: var(--confirmed-subtle);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -64,47 +60,47 @@
 }
 
 :root {
-  --background: oklch(0.985 0.002 247);
-  --foreground: oklch(0.21 0.02 257);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.22 0.01 160);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.02 257);
+  --card-foreground: oklch(0.22 0.01 160);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.02 257);
-  --primary: oklch(0.52 0.18 258);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.96 0.005 247);
-  --secondary-foreground: oklch(0.3 0.02 257);
-  --muted: oklch(0.965 0.004 247);
-  --muted-foreground: oklch(0.52 0.015 257);
-  --accent: oklch(0.95 0.01 255);
-  --accent-foreground: oklch(0.3 0.02 257);
-  --destructive: oklch(0.577 0.221 27.325);
-  --border: oklch(0.915 0.006 257);
-  --input: oklch(0.915 0.006 257);
-  --ring: oklch(0.52 0.18 258);
-  --chart-1: oklch(0.52 0.18 258);
-  --chart-2: oklch(0.55 0.18 295);
-  --chart-3: oklch(0.68 0.16 55);
-  --chart-4: oklch(0.62 0.2 27);
-  --chart-5: oklch(0.58 0.15 155);
-  --radius: 0.5rem;
+  --popover-foreground: oklch(0.22 0.01 160);
+  /* Racing Green */
+  --primary: oklch(0.27 0.045 165);
+  --primary-foreground: oklch(0.99 0.01 150);
+  --secondary: oklch(0.97 0.003 160);
+  --secondary-foreground: oklch(0.3 0.02 165);
+  --muted: oklch(0.97 0.003 160);
+  --muted-foreground: oklch(0.5 0.012 165);
+  --accent: oklch(0.96 0.008 165);
+  --accent-foreground: oklch(0.27 0.045 165);
+  --destructive: oklch(0.55 0.2 27);
+  --border: oklch(0.9 0.004 165);
+  --input: oklch(0.88 0.004 165);
+  --ring: oklch(0.27 0.045 165);
+  --chart-1: oklch(0.27 0.045 165);
+  --chart-2: oklch(0.5 0.13 245);
+  --chart-3: oklch(0.6 0.13 145);
+  --chart-4: oklch(0.65 0.15 70);
+  --chart-5: oklch(0.55 0.2 27);
+  --radius: 0.375rem;
 
-  /* Wizard accent tokens */
-  --verification: oklch(0.52 0.18 258);
-  --verification-foreground: oklch(0.985 0 0);
-  --verification-subtle: oklch(0.95 0.03 258);
-  --association: oklch(0.55 0.18 295);
-  --association-foreground: oklch(0.985 0 0);
-  --association-subtle: oklch(0.95 0.03 295);
-  --superseded: oklch(0.66 0.16 55);
-  --superseded-foreground: oklch(0.21 0.02 257);
-  --superseded-subtle: oklch(0.96 0.04 70);
-  --duplicate: oklch(0.62 0.2 27);
-  --duplicate-foreground: oklch(0.985 0 0);
-  --duplicate-subtle: oklch(0.96 0.03 27);
-  --confirmed: oklch(0.55 0.14 155);
-  --confirmed-foreground: oklch(0.985 0 0);
-  --confirmed-subtle: oklch(0.95 0.05 155);
+  --brand: oklch(0.24 0.04 168);
+  --brand-foreground: oklch(0.98 0.01 150);
+  --link: oklch(0.5 0.11 245);
+
+  /* Surfaces */
+  --detail-surface: oklch(0.975 0.003 165);
+  --results-bar: oklch(0.965 0.004 165);
+
+  /* Stage legend colors (categorical) */
+  --stage-prever: oklch(0.52 0.14 248);
+  --stage-verify: oklch(0.34 0.04 168);
+  --stage-superseded: oklch(0.58 0.21 27);
+  --stage-cfa: oklch(0.55 0.13 150);
+  --stage-duplicate: oklch(0.62 0.13 75);
+  --stage-nfr: oklch(0.58 0.1 130);
 
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);

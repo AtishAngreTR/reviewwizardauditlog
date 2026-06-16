@@ -1,18 +1,28 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Source_Sans_3, Source_Serif_4, Source_Code_Pro } from 'next/font/google'
 import './globals.css'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const sourceSans = Source_Sans_3({
+  variable: '--font-source-sans',
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+})
+const sourceSerif = Source_Serif_4({
+  variable: '--font-source-serif',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+})
+const sourceCode = Source_Code_Pro({
+  variable: '--font-source-code',
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
 })
 
 export const metadata: Metadata = {
-  title: '1040SCAN Activity Log',
+  title: 'Review wizard audit log',
   description:
-    'Audit activity log tracking user actions across the 1040SCAN verification and post-verification wizards.',
+    'Read-only post-completion record of every action taken across the Review Wizard, for reviewing managers and second reviewers.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -39,7 +49,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} bg-background`}>
+    <html
+      lang="en"
+      className={`${sourceSans.variable} ${sourceSerif.variable} ${sourceCode.variable} bg-background`}
+    >
       <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

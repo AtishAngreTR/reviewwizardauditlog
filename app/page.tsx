@@ -1,5 +1,5 @@
-import { ActivityDashboard } from "@/components/activity-dashboard"
+import { ReviewWizardAuditLog } from "@/components/review-wizard-audit-log"
 
 export default function Page() {
-  return <ActivityDashboard />
+  return <ReviewWizardAuditLog />
 }
