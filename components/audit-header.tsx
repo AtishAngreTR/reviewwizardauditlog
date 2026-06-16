@@ -1,4 +1,4 @@
-import { Lock, FileText, Printer, X } from "lucide-react"
+import { Lock, FileText, Printer } from "lucide-react"
 import { ENGAGEMENT } from "@/lib/audit-data"
 
 function MetaSep() {
@@ -24,19 +24,8 @@ export function AuditHeader() {
       </div>
 
       {/* Title block */}
-      <div className="relative border-b border-border bg-card">
-        {/* Centered close affordance (read-only modal chrome) */}
-        <div className="pointer-events-none absolute inset-x-0 -top-5 flex justify-center">
-          <button
-            type="button"
-            aria-label="Close audit log"
-            className="pointer-events-auto flex size-12 items-center justify-center rounded-full bg-muted-foreground/70 text-background shadow-sm transition-colors hover:bg-muted-foreground"
-          >
-            <X aria-hidden="true" className="size-5" />
-          </button>
-        </div>
-
-        <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 pt-8 pb-5 sm:px-6 lg:flex-row lg:items-start lg:justify-between">
+      <div className="border-b border-border bg-card">
+        <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 pt-6 pb-5 sm:px-6 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground text-balance">
               Review wizard audit log

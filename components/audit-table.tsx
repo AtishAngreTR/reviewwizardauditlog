@@ -29,8 +29,10 @@ function DetailLine({
 
 function FieldChangeTable({
   changes,
+  by,
 }: {
   changes: NonNullable<AuditAction["fieldChanges"]>
+  by: string
 }) {
   const cellHead =
     "border-b border-border px-3 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground"
@@ -49,6 +51,9 @@ function FieldChangeTable({
             <th scope="col" className={cellHead}>
               Value changed
             </th>
+            <th scope="col" className={cellHead}>
+              By
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -63,6 +68,9 @@ function FieldChangeTable({
               <td className={`${cell} font-mono text-xs text-foreground`}>
                 {c.valueChanged}
               </td>
+              <td className={`${cell} whitespace-nowrap text-xs text-foreground`}>
+                {by}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -73,16 +81,23 @@ function FieldChangeTable({
 
 function DetailPanel({ action }: { action: AuditAction }) {
   const hasChanges = !!action.fieldChanges?.length
+  const byValue =
+    action.details.find((d) => d.label === "By")?.value ?? action.by
+  // When a change table is shown, By lives in the table — drop it from the grid.
+  const gridRows = hasChanges
+    ? action.details.filter((d) => d.label !== "By")
+    : action.details
   return (
     <div className="bg-detail-surface px-4 py-4 sm:px-6">
       {hasChanges ? (
-        <FieldChangeTable changes={action.fieldChanges!} />
+        <FieldChangeTable changes={action.fieldChanges!} by={byValue} />
       ) : null}
 
-      <dl
-        className={`grid grid-cols-1 gap-y-2.5 ${hasChanges ? "mt-3.5" : ""}`}
-      >
-        {action.details.map((row) => (
+      {gridRows.length > 0 ? (
+        <dl
+          className={`grid grid-cols-1 gap-y-2.5 ${hasChanges ? "mt-3.5" : ""}`}
+        >
+          {gridRows.map((row) => (
           <div
             key={row.label}
             className="grid grid-cols-1 gap-x-6 sm:grid-cols-[10rem_1fr]"
@@ -90,16 +105,17 @@ function DetailPanel({ action }: { action: AuditAction }) {
             <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
               {row.label}
             </dt>
-            <dd
-              className={`text-sm text-foreground ${
-                row.mono ? "font-mono" : ""
-              }`}
-            >
-              {row.value}
-            </dd>
-          </div>
-        ))}
-      </dl>
+              <dd
+                className={`text-sm text-foreground ${
+                  row.mono ? "font-mono" : ""
+                }`}
+              >
+                {row.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
 
       {action.note ? (
         <>
