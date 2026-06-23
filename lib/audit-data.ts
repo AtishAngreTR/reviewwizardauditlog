@@ -479,9 +479,9 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     stage: "superseded",
     action: "Document superseded",
     actionIcon: "doc-superseded",
-    form: "Review wizard audit log",
-    detail: "3 documents superseded; 8 pages out of 23",
-    sourcePage: "pp. 1–23",
+    form: "1099-DIV · Charles Schwab",
+    detail: "Flagged similar to: 1099-DIV · Schwab (v2, corrected)",
+    sourcePage: "pp. 1–4",
     by: "M. Chen",
     details: [{ label: "By", value: "M. Chen · Jun 12 · 10:18 AM" }],
     supersededSummaries: [
