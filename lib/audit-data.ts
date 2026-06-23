@@ -39,6 +39,14 @@ export interface FieldChange {
   page: string
 }
 
+/** One superseded document summary (Superseded stage only). */
+export interface SupersededSummary {
+  documentHead: string
+  documentType: string
+  supersededPages: string
+  totalPages: number
+}
+
 export interface AuditAction {
   id: string
   /** Sortable ISO-ish key for ordering (newest first). */
@@ -63,6 +71,11 @@ export interface AuditAction {
    * Verification only). When present, this replaces the label/value grid.
    */
   fieldChanges?: FieldChange[]
+  /**
+   * Superseded document summaries shown as a table (Superseded stage only).
+   * When present, replaces the label/value grid.
+   */
+  supersededSummaries?: SupersededSummary[]
   /** Optional explanatory note shown under the detail grid. */
   note?: string
 }
@@ -466,16 +479,17 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     stage: "superseded",
     action: "Document superseded",
     actionIcon: "doc-superseded",
-    form: "Consolidated 1099 · Charles Schwab",
-    detail: "Flagged similar to: Consolidated 1099 · Schwab (v2, corrected)",
-    sourcePage: "pp. 1–4",
+    form: "Review wizard audit log",
+    detail: "3 documents superseded; 8 pages out of 23",
+    sourcePage: "pp. 1–23",
     by: "M. Chen",
-    details: [
-      { label: "Flagged similar to", value: "Consolidated 1099 · Schwab (v2, corrected)" },
-      { label: "System confidence", value: "High — 98% field match" },
-      { label: "Resolution", value: "Confirmed — kept v2; v1 superseded" },
-      { label: "By", value: "M. Chen · Jun 12 · 10:18 AM" },
+    details: [{ label: "By", value: "M. Chen · Jun 12 · 10:18 AM" }],
+    supersededSummaries: [
+      { documentHead: "Charles Schwab", documentType: "1099-DIV", supersededPages: "1–4", totalPages: 4 },
+      { documentHead: "Vanguard", documentType: "1099-DIV", supersededPages: "2–3", totalPages: 3 },
+      { documentHead: "Fidelity", documentType: "1099-B", supersededPages: "1", totalPages: 2 },
     ],
+    note: "Superseded documents were detected as duplicate/corrected versions. Newer versions retained; older versions excluded from current-year aggregation.",
   },
 
   // ---------- CFA (2) ----------

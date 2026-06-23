@@ -85,12 +85,65 @@ function FieldChangeTable({
   )
 }
 
+function SupersededTable({
+  summaries,
+  by,
+}: {
+  summaries: NonNullable<AuditAction["supersededSummaries"]>
+  by: string
+}) {
+  const cellHead =
+    "border-b border-border px-3 py-2 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground"
+  const cell = "border-b border-border px-3 py-2 align-top"
+  return (
+    <div className="overflow-x-auto rounded-md border border-border bg-card">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr>
+            <th scope="col" className={cellHead}>
+              Document head
+            </th>
+            <th scope="col" className={cellHead}>
+              Document type
+            </th>
+            <th scope="col" className={cellHead}>
+              Pages superseded
+            </th>
+            <th scope="col" className={cellHead}>
+              By
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {summaries.map((s, idx) => (
+            <tr key={idx} className="last:[&>td]:border-b-0">
+              <td className={`${cell} font-medium text-foreground`}>
+                {s.documentHead}
+              </td>
+              <td className={`${cell} text-xs text-foreground`}>
+                {s.documentType}
+              </td>
+              <td className={`${cell} font-mono text-xs text-muted-foreground`}>
+                {s.supersededPages} of {s.totalPages}
+              </td>
+              <td className={`${cell} whitespace-nowrap text-xs text-foreground`}>
+                {by}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 function DetailPanel({ action }: { action: AuditAction }) {
   const hasChanges = !!action.fieldChanges?.length
+  const hasSuperseded = !!action.supersededSummaries?.length
   const byValue =
     action.details.find((d) => d.label === "By")?.value ?? action.by
-  // When a change table is shown, By lives in the table — drop it from the grid.
-  const gridRows = hasChanges
+  // When a change or superseded table is shown, By lives in the table — drop it from the grid.
+  const gridRows = hasChanges || hasSuperseded
     ? action.details.filter((d) => d.label !== "By")
     : action.details
   return (
@@ -99,9 +152,13 @@ function DetailPanel({ action }: { action: AuditAction }) {
         <FieldChangeTable changes={action.fieldChanges!} by={byValue} />
       ) : null}
 
+      {hasSuperseded ? (
+        <SupersededTable summaries={action.supersededSummaries!} by={byValue} />
+      ) : null}
+
       {gridRows.length > 0 ? (
         <dl
-          className={`grid grid-cols-1 gap-y-2.5 ${hasChanges ? "mt-3.5" : ""}`}
+          className={`grid grid-cols-1 gap-y-2.5 ${hasChanges || hasSuperseded ? "mt-3.5" : ""}`}
         >
           {gridRows.map((row) => (
           <div
