@@ -85,8 +85,35 @@ function FieldChangeTable({
   )
 }
 
+function SupersededPages({
+  detail,
+}: {
+  detail: NonNullable<AuditAction["supersededDetail"]>
+}) {
+  return (
+    <div className="flex flex-col gap-0.5">
+      <div className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+        Source page
+      </div>
+      {detail.pages.map((p) => (
+        <div
+          key={p.pageNumber}
+          className={`text-sm font-mono py-1 ${
+            p.isSuperseded
+              ? "text-destructive bg-destructive/10 px-2 rounded"
+              : "text-foreground"
+          }`}
+        >
+          {p.pageNumber}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function DetailPanel({ action }: { action: AuditAction }) {
   const hasChanges = !!action.fieldChanges?.length
+  const hasSuperseded = !!action.supersededDetail
   const byValue =
     action.details.find((d) => d.label === "By")?.value ?? action.by
   // When a change table is shown, By lives in the table — drop it from the grid.
@@ -94,26 +121,23 @@ function DetailPanel({ action }: { action: AuditAction }) {
     ? action.details.filter((d) => d.label !== "By")
     : action.details
 
-  // Add superseded detail rows if present
-  const allRows = action.supersededDetail
-    ? [
-        ...gridRows,
-        { label: "Total pages", value: `${action.supersededDetail.totalPages}` },
-        { label: "Superseded pages", value: action.supersededDetail.supersededPages, mono: true },
-      ]
-    : gridRows
-
   return (
     <div className="bg-detail-surface px-4 py-4 sm:px-6">
       {hasChanges ? (
         <FieldChangeTable changes={action.fieldChanges!} by={byValue} />
       ) : null}
 
-      {allRows.length > 0 ? (
+      {hasSuperseded ? (
+        <div className={`${hasChanges ? "mt-3.5" : ""}`}>
+          <SupersededPages detail={action.supersededDetail!} />
+        </div>
+      ) : null}
+
+      {gridRows.length > 0 ? (
         <dl
-          className={`grid grid-cols-1 gap-y-2.5 ${hasChanges ? "mt-3.5" : ""}`}
+          className={`grid grid-cols-1 gap-y-2.5 ${hasChanges || hasSuperseded ? "mt-3.5" : ""}`}
         >
-          {allRows.map((row) => (
+          {gridRows.map((row) => (
           <div
             key={row.label}
             className="grid grid-cols-1 gap-x-6 sm:grid-cols-[10rem_1fr]"

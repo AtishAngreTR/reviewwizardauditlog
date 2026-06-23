@@ -41,8 +41,10 @@ export interface FieldChange {
 
 /** Superseded document detail (Superseded stage only) — shows only the focused document's pages. */
 export interface SupersededDetail {
-  totalPages: number
-  supersededPages: string
+  pages: {
+    pageNumber: number
+    isSuperseded: boolean
+  }[]
 }
 
 export interface AuditAction {
@@ -482,7 +484,14 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     sourcePage: "pp. 1–4",
     by: "M. Chen",
     details: [{ label: "By", value: "M. Chen · Jun 12 · 10:18 AM" }],
-    supersededDetail: { totalPages: 4, supersededPages: "1–4" },
+    supersededDetail: {
+      pages: [
+        { pageNumber: 1, isSuperseded: true },
+        { pageNumber: 2, isSuperseded: true },
+        { pageNumber: 3, isSuperseded: true },
+        { pageNumber: 4, isSuperseded: true },
+      ],
+    },
     note: "Superseded documents were detected as duplicate/corrected versions. Newer versions retained; older versions excluded from current-year aggregation.",
   },
 
