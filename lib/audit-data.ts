@@ -39,12 +39,10 @@ export interface FieldChange {
   page: string
 }
 
-/** One superseded document summary (Superseded stage only). */
-export interface SupersededSummary {
-  documentHead: string
-  documentType: string
-  supersededPages: string
+/** Superseded document detail (Superseded stage only) — shows only the focused document's pages. */
+export interface SupersededDetail {
   totalPages: number
+  supersededPages: string
 }
 
 export interface AuditAction {
@@ -72,10 +70,10 @@ export interface AuditAction {
    */
   fieldChanges?: FieldChange[]
   /**
-   * Superseded document summaries shown as a table (Superseded stage only).
-   * When present, replaces the label/value grid.
+   * Superseded document detail (Superseded stage only).
+   * When present, adds to the label/value grid.
    */
-  supersededSummaries?: SupersededSummary[]
+  supersededDetail?: SupersededDetail
   /** Optional explanatory note shown under the detail grid. */
   note?: string
 }
@@ -224,7 +222,7 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     stage: "prever",
     action: "Field edited",
     actionIcon: "field-edited",
-    form: "1099-INT · Ally Bank",
+    form: "1099-INT �� Ally Bank",
     detail: "Last edit: Statement date = 12/31/2025",
     detailValue: "12/31/2025",
     sourcePage: "p. 1",
@@ -484,11 +482,7 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     sourcePage: "pp. 1–4",
     by: "M. Chen",
     details: [{ label: "By", value: "M. Chen · Jun 12 · 10:18 AM" }],
-    supersededSummaries: [
-      { documentHead: "Charles Schwab", documentType: "1099-DIV", supersededPages: "1–4", totalPages: 4 },
-      { documentHead: "Vanguard", documentType: "1099-DIV", supersededPages: "2–3", totalPages: 3 },
-      { documentHead: "Fidelity", documentType: "1099-B", supersededPages: "1", totalPages: 2 },
-    ],
+    supersededDetail: { totalPages: 4, supersededPages: "1–4" },
     note: "Superseded documents were detected as duplicate/corrected versions. Newer versions retained; older versions excluded from current-year aggregation.",
   },
 
