@@ -470,7 +470,7 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     ],
   },
 
-  // ---------- Superseded (1) ----------
+  // ---------- Superseded (2) ----------
   {
     id: "ss-1",
     sortKey: "2026-06-12T10:18",
@@ -487,9 +487,30 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     supersededDetail: {
       pages: [
         { pageNumber: 1, isSuperseded: true },
-        { pageNumber: 2, isSuperseded: true },
+        { pageNumber: 2, isSuperseded: false },
         { pageNumber: 3, isSuperseded: true },
-        { pageNumber: 4, isSuperseded: true },
+        { pageNumber: 4, isSuperseded: false },
+      ],
+    },
+    note: "Superseded documents were detected as duplicate/corrected versions. Newer versions retained; older versions excluded from current-year aggregation.",
+  },
+  {
+    id: "ss-2",
+    sortKey: "2026-06-12T09:48",
+    dateLabel: "Jun 12",
+    timeLabel: "09:48 AM",
+    stage: "superseded",
+    action: "Document superseded",
+    actionIcon: "doc-superseded",
+    form: "1099-B · Fidelity",
+    detail: "Flagged similar to: 1099-B · Fidelity (corrected)",
+    sourcePage: "pp. 1–2",
+    by: "A. Rivera",
+    details: [{ label: "By", value: "A. Rivera · Jun 12 · 09:48 AM" }],
+    supersededDetail: {
+      pages: [
+        { pageNumber: 1, isSuperseded: true },
+        { pageNumber: 2, isSuperseded: false },
       ],
     },
     note: "Superseded documents were detected as duplicate/corrected versions. Newer versions retained; older versions excluded from current-year aggregation.",
