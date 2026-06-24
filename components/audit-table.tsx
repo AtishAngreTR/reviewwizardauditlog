@@ -90,29 +90,27 @@ function SupersededPages({
 }: {
   detail: NonNullable<AuditAction["supersededDetail"]>
 }) {
-  const supersededCount = detail.pages.filter((p) => p.isSuperseded).length
-  const totalCount = detail.pages.length
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-[10rem_1fr]">
-        <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-          Source page
-        </dt>
-        <dd className="text-sm font-mono text-foreground">
-          {supersededCount} of {totalCount} pages superseded
-        </dd>
+    <div className="space-y-2">
+      <div className="grid grid-cols-[6rem_1fr] gap-x-6 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground pb-2 border-b border-border">
+        <div>Source page</div>
+        <div>Status</div>
       </div>
-      <div className="flex flex-col gap-0.5">
+      <div className="space-y-1">
         {detail.pages.map((p) => (
           <div
             key={p.pageNumber}
-            className={`text-sm font-mono py-1 ${
-              p.isSuperseded
-                ? "text-destructive bg-destructive/10 px-2 rounded"
-                : "text-foreground"
-            }`}
+            className="grid grid-cols-[6rem_1fr] gap-x-6 text-sm py-1"
           >
-            {p.pageNumber}
+            <div className="font-mono text-foreground">{p.pageNumber}</div>
+            <div
+              className={p.isSuperseded
+                ? "text-destructive font-medium"
+                : "text-muted-foreground"
+              }
+            >
+              {p.isSuperseded ? "Superseded" : "No"}
+            </div>
           </div>
         ))}
       </div>
