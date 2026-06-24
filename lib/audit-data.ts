@@ -486,10 +486,10 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     details: [{ label: "By", value: "M. Chen · Jun 12 · 10:18 AM" }],
     supersededDetail: {
       pages: [
-        { pageNumber: 1, isSuperseded: true },
-        { pageNumber: 2, isSuperseded: false },
-        { pageNumber: 3, isSuperseded: true },
-        { pageNumber: 4, isSuperseded: false },
+        { pageNumber: 2, isSuperseded: true },
+        { pageNumber: 5, isSuperseded: false },
+        { pageNumber: 8, isSuperseded: true },
+        { pageNumber: 12, isSuperseded: false },
       ],
     },
     note: "Superseded documents were detected as duplicate/corrected versions. Newer versions retained; older versions excluded from current-year aggregation.",
@@ -504,13 +504,13 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     actionIcon: "doc-superseded",
     form: "1099-B · Fidelity",
     detail: "Flagged similar to: 1099-B · Fidelity (corrected)",
-    sourcePage: "pp. 1–2",
+    sourcePage: "pp. 3–4",
     by: "A. Rivera",
     details: [{ label: "By", value: "A. Rivera · Jun 12 · 09:48 AM" }],
     supersededDetail: {
       pages: [
-        { pageNumber: 1, isSuperseded: true },
-        { pageNumber: 2, isSuperseded: false },
+        { pageNumber: 3, isSuperseded: true },
+        { pageNumber: 7, isSuperseded: false },
       ],
     },
     note: "Superseded documents were detected as duplicate/corrected versions. Newer versions retained; older versions excluded from current-year aggregation.",
