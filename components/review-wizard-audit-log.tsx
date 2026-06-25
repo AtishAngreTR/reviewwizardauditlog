@@ -80,26 +80,21 @@ export function ReviewWizardAuditLog() {
       <AuditHeader />
 
       <div className="mx-auto max-w-[1400px] px-4 pt-5 sm:px-6">
-        {/* Stage Chips Row with Results Summary */}
-        <div className="flex items-center justify-between gap-4 mb-4">
-          <StageChips
-            selected={stage}
-            counts={counts}
-            total={ENGAGEMENT.actionCount}
-            onSelect={setStage}
-          />
-          <div className="text-xs text-muted-foreground font-medium whitespace-nowrap">
-            Showing {filtered.length} of {ENGAGEMENT.actionCount}
-          </div>
-        </div>
-
-        {/* Filters Row */}
-        <AuditFilters
-          search={search}
-          onSearchChange={setSearch}
-          contributor={contributor}
-          onContributorChange={setContributor}
+        <StageChips
+          selected={stage}
+          counts={counts}
+          total={ENGAGEMENT.actionCount}
+          onSelect={setStage}
         />
+
+        <div className="mt-4">
+          <AuditFilters
+            search={search}
+            onSearchChange={setSearch}
+            contributor={contributor}
+            onContributorChange={setContributor}
+          />
+        </div>
       </div>
 
       <div className="mx-auto max-w-[1400px] px-4 pt-4 sm:px-6">
