@@ -12,11 +12,15 @@ import { AuditHeader } from "@/components/audit-header"
 import { StageChips, type StageFilter } from "@/components/stage-chips"
 import { AuditFilters, ResultsBar } from "@/components/audit-filters"
 import { AuditTable } from "@/components/audit-table"
+import { DocumentViewer } from "@/components/document-viewer"
 
 export function ReviewWizardAuditLog() {
   const [stage, setStage] = useState<StageFilter>("all")
   const [search, setSearch] = useState("")
   const [contributor, setContributor] = useState("all")
+  const [viewerOpen, setViewerOpen] = useState(false)
+  const [viewerDoc, setViewerDoc] = useState<{ name: string; pages: number } | null>(null)
+  const [viewerPage, setViewerPage] = useState(1)
 
   const counts = useMemo(() => {
     const base = STAGES.reduce(
@@ -61,6 +65,16 @@ export function ReviewWizardAuditLog() {
     setContributor("all")
   }
 
+  const openDocument = (docName: string, pageCount: number = 4) => {
+    setViewerDoc({ name: docName, pages: pageCount })
+    setViewerPage(1)
+    setViewerOpen(true)
+  }
+
+  const closeDocument = () => {
+    setViewerOpen(false)
+  }
+
   return (
     <main className="min-h-dvh bg-background pb-16">
       <AuditHeader />
@@ -94,7 +108,20 @@ export function ReviewWizardAuditLog() {
       </div>
 
       <div className="mx-auto max-w-[1400px] px-4 pt-4 sm:px-6">
-        <AuditTable actions={filtered} />
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_350px]">
+          <AuditTable actions={filtered} onOpenDocument={openDocument} />
+          {viewerOpen && viewerDoc && (
+            <div className="h-[calc(100vh-200px)] sticky top-20">
+              <DocumentViewer
+                documentName={viewerDoc.name}
+                currentPage={viewerPage}
+                totalPages={viewerDoc.pages}
+                onPageChange={setViewerPage}
+                onClose={closeDocument}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </main>
   )

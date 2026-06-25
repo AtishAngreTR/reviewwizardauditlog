@@ -180,7 +180,13 @@ function DetailPanel({ action }: { action: AuditAction }) {
 const TH =
   "border-b border-border px-3 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wide text-muted-foreground"
 
-export function AuditTable({ actions }: { actions: AuditAction[] }) {
+export function AuditTable({
+  actions,
+  onOpenDocument,
+}: {
+  actions: AuditAction[]
+  onOpenDocument?: (docName: string, pageCount?: number) => void
+}) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
 
   const toggle = (id: string) => {
@@ -261,13 +267,29 @@ export function AuditTable({ actions }: { actions: AuditAction[] }) {
                     </span>
                   </td>
                   <td className="px-3 py-3">
-                    <p className="font-semibold text-foreground">{a.form}</p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onOpenDocument?.(a.form)
+                      }}
+                      className="text-left hover:underline"
+                    >
+                      <p className="font-semibold text-link">{a.form}</p>
+                    </button>
                     <p className="mt-0.5 text-xs text-muted-foreground">
                       <DetailLine text={a.detail} value={a.detailValue} />
                     </p>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3 font-mono text-xs text-muted-foreground">
-                    {a.sourcePage}
+                  <td className="whitespace-nowrap px-3 py-3 font-mono text-xs">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onOpenDocument?.(a.form)
+                      }}
+                      className="text-link hover:underline"
+                    >
+                      {a.sourcePage}
+                    </button>
                   </td>
                   <td className="px-3 py-3">
                     <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-xs text-foreground">
