@@ -1,7 +1,8 @@
 "use client"
 
-import { ChevronLeft, ChevronRight, X } from "lucide-react"
+import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
 
 interface DocumentViewerProps {
   documentName: string
@@ -18,77 +19,98 @@ export function DocumentViewer({
   onPageChange,
   onClose,
 }: DocumentViewerProps) {
+  const [zoom, setZoom] = useState(100)
   const canPrevious = currentPage > 1
   const canNext = currentPage < totalPages
 
+  const handleZoomIn = () => setZoom((z) => Math.min(z + 25, 200))
+  const handleZoomOut = () => setZoom((z) => Math.max(z - 25, 50))
+
   return (
-    <div className="flex h-full flex-col bg-card">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border px-4 py-3">
-        <div>
-          <h3 className="text-sm font-semibold text-foreground truncate">
-            {documentName}
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            Page {currentPage} of {totalPages}
-          </p>
-        </div>
+    <div className="flex h-full flex-col bg-card rounded-lg border border-border shadow-sm">
+      {/* Header with Close */}
+      <div className="flex items-center justify-between border-b border-border px-4 py-2">
+        <h3 className="text-sm font-semibold text-foreground truncate">
+          {documentName}
+        </h3>
         <Button
           variant="ghost"
           size="sm"
           onClick={onClose}
-          className="h-8 w-8 p-0"
+          className="h-7 w-7 p-0"
         >
-          <X className="size-4" />
+          <X className="size-3.5" />
         </Button>
+      </div>
+
+      {/* Controls Bar - Top */}
+      <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2 bg-muted/30">
+        {/* Navigation */}
+        <div className="flex items-center gap-1">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={!canPrevious}
+            className="h-7 w-7 p-0"
+          >
+            <ChevronLeft className="size-3" />
+          </Button>
+          <span className="text-xs font-medium text-muted-foreground min-w-fit px-1.5">
+            {currentPage}/{totalPages}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={!canNext}
+            className="h-7 w-7 p-0"
+          >
+            <ChevronRight className="size-3" />
+          </Button>
+        </div>
+
+        {/* Zoom Controls */}
+        <div className="flex items-center gap-1">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleZoomOut}
+            disabled={zoom <= 50}
+            className="h-7 w-7 p-0"
+          >
+            <ZoomOut className="size-3" />
+          </Button>
+          <span className="text-xs font-medium text-muted-foreground min-w-fit px-1.5">
+            {zoom}%
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleZoomIn}
+            disabled={zoom >= 200}
+            className="h-7 w-7 p-0"
+          >
+            <ZoomIn className="size-3" />
+          </Button>
+        </div>
       </div>
 
       {/* Document Preview Area */}
-      <div className="flex-1 bg-muted/30 flex items-center justify-center overflow-auto p-4">
-        <div className="w-full max-w-2xl aspect-[8.5/11] bg-background border-2 border-border rounded-lg shadow-sm flex flex-col items-center justify-center p-8">
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-2">
-              Document Preview
-            </p>
-            <p className="text-lg font-semibold text-foreground mb-4">
-              {documentName}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Page {currentPage} of {totalPages}
-            </p>
-            <div className="mt-6 text-xs text-muted-foreground space-y-1">
-              <p>Document content would display here</p>
-              <p>in a real implementation</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer with Navigation */}
-      <div className="flex items-center justify-between border-t border-border px-4 py-3">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={!canPrevious}
+      <div className="flex-1 bg-muted/20 flex items-center justify-center overflow-auto p-3">
+        <div
+          style={{
+            transform: `scale(${zoom / 100})`,
+            transformOrigin: "top center",
+          }}
+          className="transition-transform duration-200"
         >
-          <ChevronLeft className="size-4 mr-1" />
-          Previous
-        </Button>
-
-        <div className="text-xs text-muted-foreground">
-          Page {currentPage} of {totalPages}
+          <img
+            src="/forms/1099-misc-2025.png"
+            alt={documentName}
+            className="max-w-full bg-white shadow-md border border-border/50"
+          />
         </div>
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={!canNext}
-        >
-          Next
-          <ChevronRight className="size-4 ml-1" />
-        </Button>
       </div>
     </div>
   )

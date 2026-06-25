@@ -10,7 +10,7 @@ import {
 } from "@/lib/audit-data"
 import { AuditHeader } from "@/components/audit-header"
 import { StageChips, type StageFilter } from "@/components/stage-chips"
-import { AuditFilters, ResultsBar } from "@/components/audit-filters"
+import { AuditFilters } from "@/components/audit-filters"
 import { AuditTable } from "@/components/audit-table"
 import { DocumentViewer } from "@/components/document-viewer"
 
@@ -80,30 +80,25 @@ export function ReviewWizardAuditLog() {
       <AuditHeader />
 
       <div className="mx-auto max-w-[1400px] px-4 pt-5 sm:px-6">
-        <StageChips
-          selected={stage}
-          counts={counts}
-          total={ENGAGEMENT.actionCount}
-          onSelect={setStage}
-        />
-
-        <div className="mt-5">
-          <AuditFilters
-            search={search}
-            onSearchChange={setSearch}
-            contributor={contributor}
-            onContributorChange={setContributor}
+        {/* Stage Chips Row with Results Summary */}
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <StageChips
+            selected={stage}
+            counts={counts}
+            total={ENGAGEMENT.actionCount}
+            onSelect={setStage}
           />
+          <div className="text-xs text-muted-foreground font-medium whitespace-nowrap">
+            Showing {filtered.length} of {ENGAGEMENT.actionCount}
+          </div>
         </div>
-      </div>
 
-      <div className="mt-4">
-        <ResultsBar
-          shown={filtered.length}
-          total={ENGAGEMENT.actionCount}
-          stageLabel={stage === "all" ? null : STAGE_LABEL[stage]}
-          filtersActive={filtersActive}
-          onClear={clearFilters}
+        {/* Filters Row */}
+        <AuditFilters
+          search={search}
+          onSearchChange={setSearch}
+          contributor={contributor}
+          onContributorChange={setContributor}
         />
       </div>
 
