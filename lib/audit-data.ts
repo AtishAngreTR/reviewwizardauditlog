@@ -148,7 +148,7 @@ export const ENGAGEMENT = {
   domain: "TCProd-TR-03",
   returnType: "1040 Individual",
   taxYear: "TY 2025",
-  actionCount: 28,
+  actionCount: 30,
   fieldValueCount: 40,
   contributorCount: 2,
   dateRange: "Jun 11–12, 2026",
@@ -232,7 +232,7 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     details: [{ label: "By", value: "A. Rivera · Jun 11 · 3:50 PM" }],
     fieldChanges: [
       { fieldName: "Statement date", originalValue: "01/31/2025", valueChanged: "12/31/2025", page: "1" },
-      { fieldName: "Account number", originalValue: "•••• 0098", valueChanged: "•••• 0090", page: "1" },
+      { fieldName: "Account number", originalValue: "•••• 0098", valueChanged: "••���• 0090", page: "1" },
     ],
   },
 
@@ -516,7 +516,7 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     note: "Superseded documents were detected as duplicate/corrected versions. Newer versions retained; older versions excluded from current-year aggregation.",
   },
 
-  // ---------- CFA (4) ----------
+  // ---------- CFA (6) ----------
   {
     id: "cf-1",
     sortKey: "2026-06-12T11:20",
@@ -532,7 +532,6 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     details: [
       { label: "Child form", value: "1099-MISC · Westchester Property Management (111-11-1111)" },
       { label: "Associated to parent", value: "Schedule E · Rental or Royalty Income & Expenses" },
-      { label: "Effect", value: "Included in tax return — values flow to tax software" },
       { label: "By", value: "M. Chen · Jun 12 · 11:20 AM" },
     ],
   },
@@ -551,7 +550,6 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     details: [
       { label: "Child form", value: "1098 Mortgage · CITIMORGAGE, INC. (698-00-23698)" },
       { label: "Associated to parent", value: "Schedule A · Itemized Deductions (Interest & Taxes)" },
-      { label: "Effect", value: "Included in tax return — values flow to tax software" },
       { label: "By", value: "A. Rivera · Jun 12 · 11:05 AM" },
     ],
   },
@@ -570,7 +568,6 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     details: [
       { label: "Child form", value: "1099-MISC · Honii Smith Revenue Bank (KS53)" },
       { label: "Associated to parent", value: "Schedule C · Business Income and Expenses" },
-      { label: "Effect", value: "Included in tax return — values flow to tax software" },
       { label: "By", value: "M. Chen · Jun 12 · 10:50 AM" },
     ],
   },
@@ -589,8 +586,47 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     details: [
       { label: "Child form", value: "1099-B · Fidelity Investments (securities sales)" },
       { label: "Associated to parent", value: "Schedule D · Capital Gains and Losses" },
-      { label: "Effect", value: "Included in tax return — values flow to tax software" },
       { label: "By", value: "A. Rivera · Jun 12 · 10:35 AM" },
+    ],
+  },
+  {
+    id: "cf-5",
+    sortKey: "2026-06-12T12:30",
+    dateLabel: "Jun 12",
+    timeLabel: "12:30 PM",
+    stage: "cfa",
+    action: "Form added manually",
+    actionIcon: "workpaper",
+    form: "ABC Consulting · Farm Income and Expenses",
+    detail: "Added to parent: Schedule F · Farm Income and Expenses",
+    sourcePage: "manual entry",
+    by: "A. Rivera",
+    details: [
+      { label: "Form added", value: "ABC Consulting (111-11-1111)" },
+      { label: "Payer name", value: "ABC Consulting" },
+      { label: "Recipient ID", value: "111-11-1111" },
+      { label: "Added to parent", value: "Schedule F · Farm Income and Expenses" },
+      { label: "By", value: "A. Rivera · Jun 12 · 12:30 PM" },
+    ],
+  },
+  {
+    id: "cf-6",
+    sortKey: "2026-06-12T12:15",
+    dateLabel: "Jun 12",
+    timeLabel: "12:15 PM",
+    stage: "cfa",
+    action: "Form added manually",
+    actionIcon: "workpaper",
+    form: "Newport Beach Lane · 1099-MISC",
+    detail: "Added to parent: 1099-MISC",
+    sourcePage: "manual entry",
+    by: "M. Chen",
+    details: [
+      { label: "Form added", value: "Newport Beach Lane (RENTAL) (T)" },
+      { label: "Payer name", value: "Newport Beach Lane (RENTAL) (T)" },
+      { label: "Recipient ID", value: "Not provided" },
+      { label: "Added to parent", value: "1099-MISC" },
+      { label: "By", value: "M. Chen · Jun 12 · 12:15 PM" },
     ],
   },
 
