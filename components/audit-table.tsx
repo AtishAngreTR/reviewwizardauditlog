@@ -118,63 +118,9 @@ function SupersededPages({
   )
 }
 
-function DuplicateItems({
-  detail,
-}: {
-  detail: NonNullable<AuditAction["duplicateDetail"]>
-}) {
-  return (
-    <div className="space-y-2">
-      <div className="grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-0 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground pb-2 border-b border-border">
-        <div className="w-6 text-center">✓</div>
-        <div>Item</div>
-        <div className="text-right">Amount</div>
-      </div>
-      <div className="space-y-1">
-        {detail.items.map((item) => (
-          <div
-            key={item.label}
-            className="grid grid-cols-[auto_1fr_auto] gap-x-3 gap-y-0 text-sm py-1 items-center"
-          >
-            <div className="w-6 text-center">
-              {item.isDuplicate ? (
-                <span className="inline-flex items-center justify-center w-4 h-4 rounded border border-destructive bg-destructive/10">
-                  <span className="text-xs text-destructive font-bold">✓</span>
-                </span>
-              ) : (
-                <span className="inline-flex items-center justify-center w-4 h-4 rounded border border-muted-foreground/30 bg-transparent">
-                  <span className="text-xs text-muted-foreground opacity-0">✓</span>
-                </span>
-              )}
-            </div>
-            <div
-              className={item.isDuplicate
-                ? "text-destructive"
-                : "text-foreground"
-              }
-            >
-              {item.label}
-            </div>
-            <div
-              className={`text-right font-mono text-xs ${
-                item.isDuplicate
-                  ? "text-destructive"
-                  : "text-muted-foreground"
-              }`}
-            >
-              {item.amount || "—"}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 function DetailPanel({ action }: { action: AuditAction }) {
   const hasChanges = !!action.fieldChanges?.length
   const hasSuperseded = !!action.supersededDetail
-  const hasDuplicate = !!action.duplicateDetail
   const byValue =
     action.details.find((d) => d.label === "By")?.value ?? action.by
   // When a change table is shown, By lives in the table — drop it from the grid.
@@ -191,12 +137,6 @@ function DetailPanel({ action }: { action: AuditAction }) {
       {hasSuperseded ? (
         <div className={`${hasChanges ? "mt-3.5" : ""}`}>
           <SupersededPages detail={action.supersededDetail!} />
-        </div>
-      ) : null}
-
-      {hasDuplicate ? (
-        <div className={`${hasChanges || hasSuperseded ? "mt-3.5" : ""}`}>
-          <DuplicateItems detail={action.duplicateDetail!} />
         </div>
       ) : null}
 

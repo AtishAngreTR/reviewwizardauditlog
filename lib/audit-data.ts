@@ -47,14 +47,6 @@ export interface SupersededDetail {
   }[]
 }
 
-export interface DuplicateDetail {
-  items: {
-    label: string
-    amount?: string
-    isDuplicate: boolean
-  }[]
-}
-
 export interface AuditAction {
   id: string
   /** Sortable ISO-ish key for ordering (newest first). */
@@ -84,11 +76,6 @@ export interface AuditAction {
    * When present, adds to the label/value grid.
    */
   supersededDetail?: SupersededDetail
-  /**
-   * Duplicate data detail (Duplicate stage only).
-   * When present, shows items marked as duplicate vs kept.
-   */
-  duplicateDetail?: DuplicateDetail
   /** Optional explanatory note shown under the detail grid. */
   note?: string
 }
@@ -660,16 +647,73 @@ export const AUDIT_ACTIONS: AuditAction[] = [
     details: [
       { label: "Organizer value", value: "$132.00 interest income" },
       { label: "Source value", value: "$132.00 interest income" },
+      { label: "Kept", value: "Source · 1099-INT" },
       { label: "Match reason", value: "Identical amounts and description" },
-      { label: "Resolution", value: "Marked as duplicate in Organizer (will exclude from export)" },
       { label: "By", value: "M. Chen · Jun 12 · 10:24 AM" },
     ],
-    duplicateDetail: {
-      items: [
-        { label: "Organizer · Interest income", amount: "$132.00", isDuplicate: true },
-        { label: "Source · 1099-INT", amount: "$132.00", isDuplicate: false },
-      ],
-    },
+  },
+  {
+    id: "dp-2",
+    sortKey: "2026-06-12T10:30",
+    dateLabel: "Jun 12",
+    timeLabel: "10:30 AM",
+    stage: "duplicate",
+    action: "Duplicate marked",
+    actionIcon: "duplicate-resolved",
+    form: "1099-MISC · Cole Co",
+    detail: "Organizer: $150 royalty (duplicate)",
+    detailValue: "$150",
+    sourcePage: "Organizer page 7",
+    by: "A. Rivera",
+    details: [
+      { label: "Organizer value", value: "$150 royalty" },
+      { label: "Source value", value: "$150 royalty from 1099-MISC" },
+      { label: "Kept", value: "Source · Cole Co 1099-MISC" },
+      { label: "Match reason", value: "Auto-match: payer EIN and amount verified" },
+      { label: "By", value: "A. Rivera · Jun 12 · 10:30 AM" },
+    ],
+  },
+  {
+    id: "dp-3",
+    sortKey: "2026-06-12T10:18",
+    dateLabel: "Jun 12",
+    timeLabel: "10:18 AM",
+    stage: "duplicate",
+    action: "Duplicate unmarked",
+    actionIcon: "duplicate-resolved",
+    form: "Form 1041 · Estate",
+    detail: "Organizer: $2050 distribution (not duplicate)",
+    detailValue: "$2050",
+    sourcePage: "Organizer page 9",
+    by: "M. Chen",
+    details: [
+      { label: "Organizer value", value: "$2050 estate distribution" },
+      { label: "Source value", value: "$2050 estate distribution (Box 1a)" },
+      { label: "Kept", value: "Organizer and Source · Both retained" },
+      { label: "Reason", value: "Determined not duplicate; different source documents" },
+      { label: "By", value: "M. Chen · Jun 12 · 10:18 AM" },
+    ],
+  },
+  {
+    id: "dp-4",
+    sortKey: "2026-06-12T10:12",
+    dateLabel: "Jun 12",
+    timeLabel: "10:12 AM",
+    stage: "duplicate",
+    action: "Duplicate marked",
+    actionIcon: "duplicate-resolved",
+    form: "Schedule C · Self-Employment Income",
+    detail: "Organizer: $17451 business income (duplicate)",
+    detailValue: "$17451",
+    sourcePage: "Organizer page 3",
+    by: "A. Rivera",
+    details: [
+      { label: "Organizer value", value: "$17451 net business income" },
+      { label: "Source value", value: "$17451 business income (from 1099-NEC)" },
+      { label: "Kept", value: "Source · 1099-NEC" },
+      { label: "Match reason", value: "Manually identified duplicate by reviewer" },
+      { label: "By", value: "A. Rivera · Jun 12 · 10:12 AM" },
+    ],
   },
   {
     id: "dp-2",
@@ -689,7 +733,7 @@ export const AUDIT_ACTIONS: AuditAction[] = [
       { label: "Source value", value: "$150 royalty from 1099-MISC" },
       { label: "Match reason", value: "Auto-match: payer EIN and amount verified" },
       { label: "Resolution", value: "Confirmed duplicate match (Organizer excluded from export)" },
-      { label: "By", value: "A. Rivera · Jun 12 · 10:30 AM" },
+      { label: "By", value: "A. Rivera �� Jun 12 · 10:30 AM" },
     ],
     duplicateDetail: {
       items: [
