@@ -47,6 +47,14 @@ export interface SupersededDetail {
   }[]
 }
 
+export interface DuplicateDetail {
+  items: {
+    label: string
+    amount?: string
+    isDuplicate: boolean
+  }[]
+}
+
 export interface AuditAction {
   id: string
   /** Sortable ISO-ish key for ordering (newest first). */
@@ -76,6 +84,11 @@ export interface AuditAction {
    * When present, adds to the label/value grid.
    */
   supersededDetail?: SupersededDetail
+  /**
+   * Duplicate data detail (Duplicate stage only).
+   * When present, shows items marked as duplicate vs kept.
+   */
+  duplicateDetail?: DuplicateDetail
   /** Optional explanatory note shown under the detail grid. */
   note?: string
 }
@@ -651,6 +664,12 @@ export const AUDIT_ACTIONS: AuditAction[] = [
       { label: "Resolution", value: "Marked as duplicate in Organizer (will exclude from export)" },
       { label: "By", value: "M. Chen · Jun 12 · 10:24 AM" },
     ],
+    duplicateDetail: {
+      items: [
+        { label: "Organizer · Interest income", amount: "$132.00", isDuplicate: true },
+        { label: "Source · 1099-INT", amount: "$132.00", isDuplicate: false },
+      ],
+    },
   },
   {
     id: "dp-2",
@@ -672,6 +691,12 @@ export const AUDIT_ACTIONS: AuditAction[] = [
       { label: "Resolution", value: "Confirmed duplicate match (Organizer excluded from export)" },
       { label: "By", value: "A. Rivera · Jun 12 · 10:30 AM" },
     ],
+    duplicateDetail: {
+      items: [
+        { label: "Organizer · Royalty income", amount: "$150", isDuplicate: true },
+        { label: "Source · Cole Co 1099-MISC", amount: "$150", isDuplicate: false },
+      ],
+    },
   },
   {
     id: "dp-3",
@@ -693,6 +718,12 @@ export const AUDIT_ACTIONS: AuditAction[] = [
       { label: "Resolution", value: "Removed duplicate marking (both amounts will be retained)" },
       { label: "By", value: "M. Chen · Jun 12 · 10:18 AM" },
     ],
+    duplicateDetail: {
+      items: [
+        { label: "Organizer · Estate distribution", amount: "$2050", isDuplicate: false },
+        { label: "Source · 1041-K1 distribution", amount: "$2050", isDuplicate: false },
+      ],
+    },
   },
   {
     id: "dp-4",
@@ -714,6 +745,12 @@ export const AUDIT_ACTIONS: AuditAction[] = [
       { label: "Resolution", value: "Marked as duplicate in Organizer (will exclude from export)" },
       { label: "By", value: "A. Rivera · Jun 12 · 10:12 AM" },
     ],
+    duplicateDetail: {
+      items: [
+        { label: "Organizer · Net business income", amount: "$17451", isDuplicate: true },
+        { label: "Source · 1099-NEC", amount: "$17451", isDuplicate: false },
+      ],
+    },
   },
 
   // ---------- NFR (6) ----------
